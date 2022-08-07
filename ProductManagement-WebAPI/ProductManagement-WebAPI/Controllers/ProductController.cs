@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProductManagement_WebAPI.Cache;
 using ProductManagement_WebAPI.Data;
+using ProductManagement_WebAPI.Data.Services;
 using ProductManagement_WebAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -17,91 +17,82 @@ namespace ProductManagement_WebAPI.Controllers
     [ApiController,Authorize]
     public class ProductController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        private readonly ICacheService _cacheService;
-        public ProductController(AppDbContext context, ICacheService cacheService)
+        private readonly ProductService _productService;
+        public ProductController(ProductService productService)
         {
-            _context = context;
-            _cacheService = cacheService;
+            _productService = productService;
         }
+
         [HttpGet]
         [Route("ProductsList")]
         public async Task<ActionResult<IEnumerable<Product>>> Get()
         {
-            var productCache = new List<Product>();
-            productCache = _cacheService.GetData<List<Product>>("Product");
-            if (productCache == null)
+            try
             {
-                var product = await _context.Products.ToListAsync();
-                if (product.Count > 0)
-                {
-                    productCache = product;
-                    var expirationTime = DateTimeOffset.Now.AddMinutes(3.0);
-                    _cacheService.SetData("Product", productCache, expirationTime);
-                }
+                var products = await _productService.GetAllProducts();
+                return (products.Count > 0) ? Ok(products) : BadRequest("No Products Found");
             }
-            return productCache;
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+
         [HttpGet]
         [Route("ProductDetail")]
         public async Task<ActionResult<Product>> Get(int id)
         {
-            var productCache = new Product();
-            var productCacheList = new List<Product>();
-            productCacheList = _cacheService.GetData<List<Product>>("Product");
-            productCache = productCacheList.Find(x => x.ProductId == id);
-            if (productCache == null)
+            try
             {
-                productCache = await _context.Products.FindAsync(id);
+                if (id < 0) return BadRequest("Product Id cant be negative or Zero");
+                var product = await _productService.GetProductById(id);
+                return (product!=null) ? Ok(product) : BadRequest($"No Product Found with Id: {id}");
             }
-            return productCache;
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+
         [HttpPost]
         [Route("CreateProduct")]
-        public async Task<ActionResult<Product>> POST(Product product)
+        public async Task<ActionResult<Product>> POST([FromBody]ProductVM productVM)
         {
-            _context.Products.Add(product);
-            await _context.SaveChangesAsync();
-            _cacheService.RemoveData("Product");
-            return CreatedAtAction(nameof(Get), new
+            try
             {
-                id = product.ProductId
-            }, product);
+                if (String.IsNullOrEmpty(productVM.ProductName)) return BadRequest("Product should have some name");
+                var newProduct = await _productService.AddProduct(productVM);
+                return Created($"api/product/ProductDetails/{newProduct.ProductId}", newProduct);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpPost]
         [Route("DeleteProduct")]
         public async Task<ActionResult<IEnumerable<Product>>> Delete(int id)
         {
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            _context.Products.Remove(product);
-            _cacheService.RemoveData("Product");
-            await _context.SaveChangesAsync();
-            return await _context.Products.ToListAsync();
+            if (id < 0) return BadRequest("Product Id cant be negative or Zero");
+            var product = await _productService.DeleteProduct(id);
+            return (product != null) ? Ok(product) : BadRequest($"No Product Found with Id: {id}");
         }
+
         [HttpPost]
         [Route("UpdateProduct")]
-        public async Task<ActionResult<IEnumerable<Product>>> Update(int id, Product product)
+        public async Task<ActionResult<IEnumerable<Product>>> Update(int id, ProductVM productVM)
         {
-            if (id != product.ProductId)
+            try
             {
-                return BadRequest();
+                if (id < 0) return BadRequest("Product Id cant be negative or Zero");
+                if (String.IsNullOrEmpty(productVM.ProductName)) return BadRequest("Product should have some name");
+                var updatedProduct = await _productService.UpdateProductById(id,productVM);
+                return Created($"api/product/ProductDetails/{updatedProduct.ProductId}", updatedProduct);
             }
-            var productData = await _context.Products.FindAsync(id);
-            if (productData == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest(ex.Message);
             }
-            productData.ProductCost = product.ProductCost;
-            productData.ProductDescription = product.ProductDescription;
-            productData.ProductName = product.ProductName;
-            productData.ProductStock = product.ProductStock;
-            _cacheService.RemoveData("Product");
-            await _context.SaveChangesAsync();
-            return await _context.Products.ToListAsync();
         }
     }
 }

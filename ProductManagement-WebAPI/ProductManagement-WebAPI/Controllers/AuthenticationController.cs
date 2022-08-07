@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ProductManagement_WebAPI.Data.Models;
-using ProductManagement_WebAPI.Cache;
 using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -18,6 +17,13 @@ namespace ProductManagement_WebAPI.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
+        private readonly IConfiguration _iconfiguration;
+
+        public AuthenticationController(IConfiguration iconfiguration)
+        {
+            _iconfiguration = iconfiguration;
+        }
+
         [HttpPost("login")]
         public IActionResult Login([FromBody] Login user)
         {
@@ -27,9 +33,9 @@ namespace ProductManagement_WebAPI.Controllers
             }
             if (user.UserName == "Jaydeep" && user.Password == "Pass@777")
             {
-                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Cache.ConfigurationManager.AppSetting["JWT:Secret"]));
+                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_iconfiguration["JWT:Secret"]));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-                var tokeOptions = new JwtSecurityToken(issuer: Cache.ConfigurationManager.AppSetting["JWT:ValidIssuer"], audience: Cache.ConfigurationManager.AppSetting["JWT:ValidAudience"], claims: new List<Claim>(), expires: DateTime.Now.AddMinutes(6), signingCredentials: signinCredentials);
+                var tokeOptions = new JwtSecurityToken(issuer: _iconfiguration["JWT:ValidIssuer"], audience: _iconfiguration["JWT:ValidAudience"], claims: new List<Claim>(), expires: DateTime.Now.AddMinutes(6), signingCredentials: signinCredentials);
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
                 return Ok(new JWTTokenResponse
                 {

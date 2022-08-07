@@ -1,10 +1,11 @@
 ﻿
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using ProductManagement_WebAPI.Cache;
 using ProductManagement_WebAPI.Data;
+using ProductManagement_WebAPI.Data.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,9 +45,9 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.AddScoped<ICacheService,CacheService>();
+builder.Services.AddTransient<ProductService>();
 
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer("Name=DefaultConnectionString"));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer("Name=DefaultConnection"));
 
 builder.Services.AddAuthentication(opt =>
 {
@@ -60,9 +61,9 @@ builder.Services.AddAuthentication(opt =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = ProductManagement_WebAPI.Cache.ConfigurationManager.AppSetting["JWT:ValidIssuer"],
-        ValidAudience = ProductManagement_WebAPI.Cache.ConfigurationManager.AppSetting["JWT:ValidAudience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ProductManagement_WebAPI.Cache.ConfigurationManager.AppSetting["JWT:Secret"]))
+        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+        ValidAudience = builder.Configuration["JWT:ValidAudience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
     };
 });
 
@@ -85,5 +86,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.UseCors(x=>x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+DbInitializer.Seed(app);
 app.Run();
 
