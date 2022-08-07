@@ -1,0 +1,37 @@
+﻿<Properties StartupConfiguration="{DE8878A5-D849-4E2C-B366-37E877CDF63C}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="ProductManagement-WebAPI/Controllers/ProductController.cs">
+    <Files>
+      <File FileName="ProductManagement-WebAPI/Data/AppDbContext.cs" Line="1" Column="1" />
+      <File FileName="ProductManagement-WebAPI/appsettings.json" Line="20" Column="1" />
+      <File FileName="ProductManagement-WebAPI/Data/Services/IProductService.cs" Line="20" Column="1" />
+      <File FileName="ProductManagement-WebAPI/Data/ViewModels/ProductVM.cs" Line="4" Column="27" />
+      <File FileName="ProductManagement-WebAPI/Data/Services/ProductService.cs" Line="46" Column="1" />
+      <File FileName="ProductManagement-WebAPI/Data/Models/Product.cs" Line="1" Column="1" />
+      <File FileName="ProductManagement-WebAPI/Controllers/ProductController.cs" Line="21" Column="64" />
+      <File FileName="ProductManagement-WebAPI/Controllers/AuthenticationController.cs" Line="34" Column="1" />
+      <File FileName="ProductManagement-WebAPI/Program.cs" Line="89" Column="25" />
+      <File FileName="ProductManagement-WebAPI/Data/DbInitializer.cs" Line="39" Column="5" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="ProductManagement-WebAPI" expanded="True">
+            <Node name="ProductManagement-WebAPI" expanded="True">
+              <Node name="Controllers" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.ProductManagement-WebAPI PreferredExecutionTarget="/Applications/Google Chrome.app" />
+</Properties>
