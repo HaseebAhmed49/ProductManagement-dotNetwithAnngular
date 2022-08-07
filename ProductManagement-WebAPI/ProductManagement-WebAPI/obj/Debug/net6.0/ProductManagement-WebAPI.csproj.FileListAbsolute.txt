@@ -1,0 +1,7 @@
+/Users/haseebahmed/Desktop/dotNet Practice/ProductManagement-dotNetwithAnngular/ProductManagement-WebAPI/ProductManagement-WebAPI/obj/Debug/net6.0/ProductManagement-WebAPI.csproj.AssemblyReference.cache
+/Users/haseebahmed/Desktop/dotNet Practice/ProductManagement-dotNetwithAnngular/ProductManagement-WebAPI/ProductManagement-WebAPI/obj/Debug/net6.0/ProductManagement-WebAPI.GeneratedMSBuildEditorConfig.editorconfig
+/Users/haseebahmed/Desktop/dotNet Practice/ProductManagement-dotNetwithAnngular/ProductManagement-WebAPI/ProductManagement-WebAPI/obj/Debug/net6.0/ProductManagement-WebAPI.AssemblyInfoInputs.cache
+/Users/haseebahmed/Desktop/dotNet Practice/ProductManagement-dotNetwithAnngular/ProductManagement-WebAPI/ProductManagement-WebAPI/obj/Debug/net6.0/ProductManagement-WebAPI.AssemblyInfo.cs
+/Users/haseebahmed/Desktop/dotNet Practice/ProductManagement-dotNetwithAnngular/ProductManagement-WebAPI/ProductManagement-WebAPI/obj/Debug/net6.0/ProductManagement-WebAPI.csproj.CoreCompileInputs.cache
+/Users/haseebahmed/Desktop/dotNet Practice/ProductManagement-dotNetwithAnngular/ProductManagement-WebAPI/ProductManagement-WebAPI/obj/Debug/net6.0/ProductManagement-WebAPI.MvcApplicationPartsAssemblyInfo.cs
+/Users/haseebahmed/Desktop/dotNet Practice/ProductManagement-dotNetwithAnngular/ProductManagement-WebAPI/ProductManagement-WebAPI/obj/Debug/net6.0/ProductManagement-WebAPI.MvcApplicationPartsAssemblyInfo.cache
