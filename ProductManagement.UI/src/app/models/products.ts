@@ -1,7 +1,7 @@
-export class Products{
+export class Products {
     productId: any;
     productName?: string;
-    productDescription?: string;
     productCost?: number;
+    productDescription?: string;
     productStock?: number;
-}
+  }
