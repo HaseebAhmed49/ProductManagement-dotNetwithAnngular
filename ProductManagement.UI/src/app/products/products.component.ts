@@ -33,9 +33,11 @@ export class ProductsComponent implements OnInit {
       productDescription: ['', [Validators.required]],
       productStock: ['', [Validators.required]]
     });
+    console.log("Products Componenets Init")
     this.getProductList();
   }
   getProductList() {
+    console.log("Get Products() Products Componenets")
     this.ProductList1 = this.productService.getProductList();
     this.ProductList = this.ProductList1;
   }
@@ -89,9 +91,12 @@ export class ProductsComponent implements OnInit {
   isUserAuthenticated() {
     const token = localStorage.getItem("jwt");
     if (token && !this.jwtHelper.isTokenExpired(token)) {
+      console.log("is User true 2 case");
       return true;
     }
     else {
+      console.log("is User false 2 case");
+
       return false;
     }
   }

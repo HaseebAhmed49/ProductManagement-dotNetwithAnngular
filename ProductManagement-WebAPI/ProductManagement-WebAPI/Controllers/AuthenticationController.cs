@@ -31,7 +31,7 @@ namespace ProductManagement_WebAPI.Controllers
             {
                 return BadRequest("Invalid user request!!!");
             }
-            if (user.UserName == "Jaydeep" && user.Password == "Pass@777")
+            if (user.UserName == "haseeb" && user.Password == "haseeb49")
             {
                 var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_iconfiguration["JWT:Secret"]));
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
