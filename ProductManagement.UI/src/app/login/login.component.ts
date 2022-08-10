@@ -26,6 +26,7 @@ export class LoginComponent {
       })
     }).subscribe(response => {
       const token = (<any>response).token;
+      console.log("Entered in Login Subscribe");
       localStorage.setItem("jwt", token);
       this.invalidLogin = false;
       this.toastr.success("Logged In successfully");
@@ -38,9 +39,11 @@ export class LoginComponent {
   isUserAuthenticated() {
     const token = localStorage.getItem("jwt");
     if (token && !this.jwtHelper.isTokenExpired(token)) {
+      console.log("is User true case");
       return true;
     }
     else {
+      console.log("is User false case");
       return false;
     }
   }

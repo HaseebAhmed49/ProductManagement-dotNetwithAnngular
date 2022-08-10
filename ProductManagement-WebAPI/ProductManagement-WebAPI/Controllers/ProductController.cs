@@ -14,7 +14,7 @@ using ProductManagement_WebAPI.Models;
 namespace ProductManagement_WebAPI.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController,Authorize]
+    [ApiController]
     public class ProductController : ControllerBase
     {
         private readonly ProductService _productService;
