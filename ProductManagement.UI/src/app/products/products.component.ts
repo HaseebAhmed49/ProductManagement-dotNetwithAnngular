@@ -1,4 +1,4 @@
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ProductsComponent implements OnInit {
 
+  token : any;
   ProductList?: Observable<Products[]>;
   ProductList1?: Observable<Products[]>;
   productForm: any;
@@ -33,19 +34,22 @@ export class ProductsComponent implements OnInit {
       productDescription: ['', [Validators.required]],
       productStock: ['', [Validators.required]]
     });
-    console.log("Products Componenets Init")
-    this.getProductList();
+    console.log("Products Componenets Init");
+    this.token = localStorage.getItem("jwt");
+    this.getProductList(this.token);
   }
-  getProductList() {
+  getProductList(token: string) {
     console.log("Get Products() Products Componenets")
-    this.ProductList1 = this.productService.getProductList();
+    this.token = localStorage.getItem("jwt");
+    this.ProductList1 = this.productService.getProductList(this.token);
     this.ProductList = this.ProductList1;
   }
   PostProduct(product: Products) {
     const product_Master = this.productForm.value;
-    this.productService.postProductData(product_Master).subscribe(
+    this.token = localStorage.getItem("jwt");
+    this.productService.postProductData(product_Master,this.token).subscribe(
       () => {
-        this.getProductList();
+        this.getProductList(this.token);
         this.productForm.reset();
         this.toastr.success('Data Saved Successfully');
       }
@@ -66,7 +70,7 @@ export class ProductsComponent implements OnInit {
     this.productService.updateProduct(product_Master).subscribe(() => {
       this.toastr.success('Data Updated Successfully');
       this.productForm.reset();
-      this.getProductList();
+      this.getProductList(this.token);
     });
   }
 
@@ -74,7 +78,7 @@ export class ProductsComponent implements OnInit {
     if (confirm('Do you want to delete this product?')) {
       this.productService.deleteProductById(id).subscribe(() => {
         this.toastr.success('Data Deleted Successfully');
-        this.getProductList();
+        this.getProductList(this.token);
       });
     }
   }
@@ -89,8 +93,8 @@ export class ProductsComponent implements OnInit {
   }
 
   isUserAuthenticated() {
-    const token = localStorage.getItem("jwt");
-    if (token && !this.jwtHelper.isTokenExpired(token)) {
+    this.token = localStorage.getItem("jwt");
+    if (this.token && !this.jwtHelper.isTokenExpired(this.token)) {
       console.log("is User true 2 case");
       return true;
     }
