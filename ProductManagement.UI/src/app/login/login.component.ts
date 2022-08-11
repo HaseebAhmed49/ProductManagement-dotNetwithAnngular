@@ -22,7 +22,8 @@ export class LoginComponent {
     const credentials = JSON.stringify(form.value);
     this.http.post(this.url +"login", credentials, {
       headers: new HttpHeaders({
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        'Access-Control-Allow-Origin': '*',
       })
     }).subscribe(response => {
       const token = (<any>response).token;

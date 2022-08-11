@@ -16,7 +16,7 @@ namespace ProductManagement_WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+ //   [Authorize(AuthenticationSchemes = "Bearer")]
     public class ProductController : ControllerBase
     {
         private readonly ProductService _productService;
@@ -71,7 +71,7 @@ namespace ProductManagement_WebAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost]
+        [HttpDelete]
         [Route("DeleteProduct")]
         public async Task<ActionResult<IEnumerable<Product>>> Delete(int id)
         {
@@ -80,7 +80,7 @@ namespace ProductManagement_WebAPI.Controllers
             return (product != null) ? Ok(product) : BadRequest($"No Product Found with Id: {id}");
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("UpdateProduct")]
         public async Task<ActionResult<IEnumerable<Product>>> Update(int id, ProductVM productVM)
         {
