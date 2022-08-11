@@ -56,7 +56,8 @@ export class ProductsComponent implements OnInit {
     );
   }
   ProductDetailsToEdit(id: string) {
-    this.productService.getProductDetailsById(id).subscribe(productResult => {
+    this.token = localStorage.getItem("jwt");
+    this.productService.getProductDetailsById(id,this.token).subscribe(productResult => {
       this.productId = productResult.productId;
       this.productForm.controls['productName'].setValue(productResult.productName);
       this.productForm.controls['productCost'].setValue(productResult.productCost);
@@ -65,9 +66,10 @@ export class ProductsComponent implements OnInit {
     });
   }
   UpdateProduct(product: Products) {
+    this.token = localStorage.getItem("jwt");
     product.productId = this.productId;
     const product_Master = this.productForm.value;
-    this.productService.updateProduct(product_Master).subscribe(() => {
+    this.productService.updateProduct(product_Master,this.token).subscribe(() => {
       this.toastr.success('Data Updated Successfully');
       this.productForm.reset();
       this.getProductList(this.token);
@@ -75,8 +77,9 @@ export class ProductsComponent implements OnInit {
   }
 
   DeleteProduct(id: number) {
+    this.token = localStorage.getItem("jwt");
     if (confirm('Do you want to delete this product?')) {
-      this.productService.deleteProductById(id).subscribe(() => {
+      this.productService.deleteProductById(id,this.token).subscribe(() => {
         this.toastr.success('Data Deleted Successfully');
         this.getProductList(this.token);
       });
